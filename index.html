@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-PT">
 <head>
@@ -314,4 +315,361 @@
                 number: "Cena 5",
                 description: "As redes PAN têm limites de distância físicos rigorosos. À medida que afasta os auscultadores ou relógio do telemóvel emissor, o sinal fica instável até a conexão cair completamente por falta de alcance.",
                 render: () => `
-                    <div class="relative flex items-center justify-betwee
+                    <div class="relative flex items-center justify-betweew-full max-w-[480px] fade-in-active">
+                        <!-- Telemóvel Estático -->
+                        <div class="flex flex-col items-center">
+                            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-md">
+                                <i data-lucide="smartphone" class="w-10 h-10 text-blue-400"></i>
+                            </div>
+                        </div>
+
+                        <!-- Canal de Comunicação Degradando-se -->
+                        <div class="flex-grow mx-4 relative flex items-center justify-center">
+                            <div id="connection-line" class="w-full h-1 bg-blue-500 rounded transition-all duration-1000"></div>
+                            <div id="lost-alert" class="absolute bg-red-500/20 text-red-400 border border-red-500/40 text-[10px] font-extrabold px-3 py-1 rounded-full opacity-0 transition-opacity duration-500 tracking-wider">
+                                SINAL PERDIDO
+                            </div>
+                        </div>
+
+                        <!-- Auricular Afastando-se -->
+                        <div id="moving-receiver" class="flex flex-col items-center transition-transform duration-1000 transform translate-x-0">
+                            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-md">
+                                <i data-lucide="headphones" class="w-10 h-10 text-purple-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                init: () => {
+                    setTimeout(() => {
+                        const rec = document.getElementById('moving-receiver');
+                        const line = document.getElementById('connection-line');
+                        const alert = document.getElementById('lost-alert');
+
+                        if (rec && line && alert) {
+                            // Fase 1: Afasta o dispositivo e enfraquece sinal (muda para amarelo)
+                            setTimeout(() => {
+                                line.classList.remove('bg-blue-500');
+                                line.classList.add('bg-yellow-500');
+                                rec.style.transform = 'translateX(60px)';
+                            }, 800);
+
+                            // Fase 2: Afasta mais e perde sinal (vermelho / quebra)
+                            setTimeout(() => {
+                                line.classList.remove('bg-yellow-500');
+                                line.classList.add('bg-red-500');
+                                line.style.opacity = '0.15';
+                                alert.classList.remove('opacity-0');
+                                rec.style.transform = 'translateX(140px)';
+                            }, 2000);
+                        }
+                    }, 150);
+                }
+            },
+            {
+                id: 6,
+                title: "A Rede Vestível (Wearables & Saúde)",
+                number: "Cena 6",
+                description: "Atualmente, vestimos a rede PAN. Sensores de fitness no sapato, vestuário inteligente e leitores biológicos geram dados constantes que são recolhidos e monitorizados diretamente pelo telemóvel.",
+                render: () => `
+                    <div class="relative flex items-center justify-center w-full h-full fade-in-active">
+                        <!-- Sensor Cardíaco Vestível -->
+                        <div class="relative z-10 flex flex-col items-center">
+                            <div class="bg-emerald-500/10 border-2 border-emerald-500 p-7 rounded-full relative shadow-2xl">
+                                <i data-lucide="activity" class="w-16 h-16 text-emerald-400 heart-beat-element"></i>
+                                <!-- Sensores Biométricos a Piscar -->
+                                <span class="absolute top-2 left-2 w-3.5 h-3.5 bg-emerald-500 rounded-full animate-ping"></span>
+                                <span class="absolute bottom-2 right-2 w-3.5 h-3.5 bg-emerald-500 rounded-full animate-ping" style="animation-delay: 0.6s;"></span>
+                            </div>
+                            <span class="text-xs text-emerald-400 mt-4 font-bold tracking-widest bg-emerald-500/10 px-3 py-1 rounded-full uppercase">Métrica em Tempo Real</span>
+                        </div>
+                    </div>
+                `,
+                init: () => {}
+            },
+            {
+                id: 7,
+                title: "Mestre e Escravos (Piconet)",
+                number: "Cena 7",
+                description: "Em redes WPAN como o Bluetooth, os aparelhos organizam-se numa micro-rede chamada 'Piconet'. Um deles assume o papel de 'Mestre' (coordenando a comunicação) e os restantes operam como 'Escravos' que executam as tarefas.",
+                render: () => `
+                    <div class="relative flex flex-col items-center justify-center w-full h-full gap-8 fade-in-active">
+                        <!-- MESTRE -->
+                        <div class="flex flex-col items-center">
+                            <div class="relative bg-slate-900 p-4 rounded-2xl border-2 border-yellow-500 shadow-xl flex items-center justify-center">
+                                <i data-lucide="crown" class="absolute -top-6 text-yellow-500 w-7 h-7 animate-bounce"></i>
+                                <i data-lucide="smartphone" class="w-8 h-8 text-blue-400"></i>
+                            </div>
+                            <span class="text-xs text-yellow-400 font-bold mt-2 tracking-wide">Mestre (Controlador)</span>
+                        </div>
+
+                        <!-- ESCRAVOS -->
+                        <div class="flex gap-16">
+                            <div class="flex flex-col items-center">
+                                <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 shadow flex items-center justify-center">
+                                    <i data-lucide="headphones" class="w-6 h-6 text-slate-400"></i>
+                                </div>
+                                <span class="text-[10px] text-slate-500 mt-1 font-semibold">Escravo 1</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 shadow flex items-center justify-center">
+                                    <i data-lucide="watch" class="w-6 h-6 text-slate-400"></i>
+                                </div>
+                                <span class="text-[10px] text-slate-500 mt-1 font-semibold">Escravo 2</span>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                init: () => {}
+            },
+            {
+                id: 8,
+                title: "Segurança: Perigo de Bluejacking",
+                number: "Cena 8",
+                description: "O 'Bluejacking' é uma técnica em que invasores utilizam ligações Bluetooth abertas em locais públicos para enviar mensagens não solicitadas ou ficheiros diretamente para o seu aparelho sem autorização.",
+                render: () => `
+                    <div class="relative flex items-center justify-between w-full max-w-[460px] fade-in-active">
+                        <!-- Dispositivo da Vítima -->
+                        <div class="flex flex-col items-center">
+                            <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 relative shadow-md">
+                                <i data-lucide="smartphone" class="w-10 h-10 text-blue-400"></i>
+                                <!-- Mensagem de Alerta ao Receber Spam -->
+                                <div id="popup-warning" class="absolute -top-14 -right-10 bg-red-600 border border-red-500 text-white text-[9px] font-black p-2 rounded-xl opacity-0 transition-opacity duration-700 shadow-2xl max-w-[120px]">
+                                    Mensagem Spam Recebida!
+                                </div>
+                            </div>
+                            <span class="text-xs text-slate-400 mt-2">Vítima</span>
+                        </div>
+
+                        <!-- Pacote Spam a Viajar -->
+                        <div class="flex-grow mx-4 relative flex items-center justify-center">
+                            <div id="spam-message" class="absolute w-9 h-9 bg-red-500/20 text-red-500 border border-red-500/30 rounded-full flex items-center justify-center hidden" style="left: 100%;">
+                                <i data-lucide="mail-warning" class="w-4 h-4"></i>
+                            </div>
+                        </div>
+
+                        <!-- Atacante Remoto -->
+                        <div class="flex flex-col items-center">
+                            <div class="bg-red-950/40 p-5 rounded-2xl border border-red-800 shadow-md">
+                                <i data-lucide="ghost" class="w-10 h-10 text-red-500"></i>
+                            </div>
+                            <span class="text-xs text-red-500 mt-2 font-bold uppercase tracking-wider">Atacante</span>
+                        </div>
+                    </div>
+                `,
+                init: () => {
+                    setTimeout(() => {
+                        const spam = document.getElementById('spam-message');
+                        const warning = document.getElementById('popup-warning');
+
+                        if (spam && warning) {
+                            spam.classList.remove('hidden');
+                            setTimeout(() => {
+                                spam.style.transition = 'left 1.8s ease-in-out';
+                                spam.style.left = '0%';
+                            }, 100);
+
+                            setTimeout(() => {
+                                warning.classList.remove('opacity-0');
+                                spam.style.opacity = '0';
+                            }, 1900);
+                        }
+                    }, 150);
+                }
+            },
+            {
+                id: 9,
+                title: "Bluetooth vs Wi-Fi (Salto de Canal)",
+                number: "Cena 9",
+                description: "O Bluetooth e o Wi-Fi partilham frequentemente a mesma frequência de rádio de $2.4\\text{ GHz}$. Para evitar interferências mútuas, as tecnologias PAN utilizam saltos dinâmicos de frequência milhares de vezes por segundo.",
+                render: () => `
+                    <div class="relative w-full max-w-[460px] h-[170px] bg-slate-900 rounded-2xl p-4 overflow-hidden border border-slate-800/80 flex flex-col justify-around fade-in-active">
+                        <!-- Canal Estático de Wi-Fi -->
+                        <div class="relative h-6 w-full bg-emerald-500/15 rounded-lg flex items-center justify-between px-3 border border-emerald-500/10">
+                            <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Banda Wi-Fi Estabelecida (2.4 GHz)</span>
+                            <div class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-ping"></div>
+                        </div>
+
+                        <!-- Canal Dinâmico do Bluetooth -->
+                        <div class="relative h-10 w-full flex items-center">
+                            <div id="skipping-bt" class="absolute w-9 h-9 bg-blue-500/20 text-blue-400 border border-blue-500 rounded-xl flex items-center justify-center transition-all duration-300" style="left: 10%; bottom: -5px;">
+                                <i data-lucide="bluetooth" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                init: () => {
+                    const bt = document.getElementById('skipping-bt');
+                    if (bt) {
+                        let step = 10;
+                        let flowDir = 1;
+                        let toggleHeight = true;
+
+                        const playJump = setInterval(() => {
+                            step += (6 * flowDir);
+                            if (step > 82 || step < 10) {
+                                flowDir *= -1;
+                            }
+                            bt.style.left = `${step}%`;
+
+                            // Simula o desvio dinâmico de canal
+                            if (toggleHeight) {
+                                bt.style.bottom = '15px';
+                            } else {
+                                bt.style.bottom = '-15px';
+                            }
+                            toggleHeight = !toggleHeight;
+                        }, 400);
+
+                        bt.dataset.intervalId = playJump;
+                    }
+                }
+            },
+            {
+                id: 10,
+                title: "Poupança Extrema (Tecnologia BLE)",
+                number: "Cena 10",
+                description: "O BLE (Bluetooth Low Energy) é fundamental para a Internet das Coisas (IoT). Permite que pequenos localizadores e sensores inteligentes permaneçam ligados e transmitam dados de forma eficiente durante meses com apenas uma pequena pilha.",
+                render: () => `
+                    <div class="relative flex items-center justify-around w-full max-w-[460px] fade-in-active">
+                        <!-- Folha de Calendário Virtual -->
+                        <div class="flex flex-col items-center bg-slate-900 border border-slate-800 rounded-2xl p-4 w-32 text-center shadow-lg float-element">
+                            <span class="text-[10px] text-blue-400 font-extrabold uppercase tracking-widest">Mês Corrente</span>
+                            <span id="calendar-text" class="text-2xl font-black text-white mt-1">JAN</span>
+                        </div>
+
+                        <!-- Carga Segura da Bateria -->
+                        <div class="flex flex-col items-center">
+                            <div class="w-14 h-24 border-4 border-slate-700 rounded-xl p-1 relative flex flex-col justify-end">
+                                <!-- Elemento da ponta superior da bateria -->
+                                <div class="absolute -top-3.5 left-1/2 transform -translate-x-1/2 w-4 h-3 bg-slate-700 rounded-t"></div>
+                                <!-- Barra de Energia Real -->
+                                <div class="bg-emerald-500 w-full rounded-lg transition-all duration-1000" style="height: 100%;"></div>
+                            </div>
+                            <span class="text-xs text-emerald-400 font-bold mt-3 bg-emerald-500/10 px-2.5 py-1 rounded-full">Bateria: 100%</span>
+                        </div>
+                    </div>
+                `,
+                init: () => {
+                    const text = document.getElementById('calendar-text');
+                    const months = ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"];
+                    if (text) {
+                        let step = 0;
+                        const running = setInterval(() => {
+                            step = (step + 1) % months.length;
+                            text.innerText = months[step];
+                        }, 200);
+                        text.dataset.intervalId = running;
+                    }
+                }
+            }
+        ];
+
+        // Estado da Aplicação
+        let currentScene = 0;
+
+        // Limpa os tempos de execução no JavaScript
+        function clearTimers() {
+            // Limpa o temporizador do cabo USB
+            const packet = document.getElementById('cable-packet');
+            if (packet && packet.dataset.intervalId) {
+                clearInterval(parseInt(packet.dataset.intervalId));
+            }
+            // Limpa o temporizador de saltos de canal Bluetooth
+            const bt = document.getElementById('skipping-bt');
+            if (bt && bt.dataset.intervalId) {
+                clearInterval(parseInt(bt.dataset.intervalId));
+            }
+            // Limpa o temporizador do calendário BLE
+            const cal = document.getElementById('calendar-text');
+            if (cal && cal.dataset.intervalId) {
+                clearInterval(parseInt(cal.dataset.intervalId));
+            }
+        }
+
+        // Constrói o Menu Lateral Dinâmico
+        function buildNavMenu() {
+            const menuContainer = document.getElementById('animation-menu');
+            menuContainer.innerHTML = '';
+
+            animations.forEach((anim, i) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-3.5 rounded-xl transition-all duration-200 flex items-center gap-3 border text-xs md:text-sm font-semibold ${
+                    i === currentScene 
+                        ? 'bg-blue-600/20 border-blue-500/50 text-blue-300 shadow-md shadow-blue-500/5' 
+                        : 'bg-slate-950/40 hover:bg-slate-900/60 border-slate-800/80 text-slate-400 hover:text-slate-200'
+                }`;
+                btn.innerHTML = `
+                    <span class="flex-shrink-0 w-6 h-6 bg-slate-950 border ${i === currentScene ? 'border-blue-400/40 text-blue-300' : 'border-slate-800 text-slate-500'} text-[10px] font-black rounded-full flex items-center justify-center">
+                        ${anim.id}
+                    </span>
+                    <span class="truncate">${anim.title}</span>
+                `;
+                btn.onclick = () => loadScene(i);
+                menuContainer.appendChild(btn);
+            });
+        }
+
+        // Carrega a Cena do Roteiro
+        function loadScene(index) {
+            clearTimers();
+            currentScene = index;
+            const item = animations[currentScene];
+
+            // Atualiza o aspeto dos botões do menu
+            buildNavMenu();
+
+            // Altera o painel informativo superior
+            document.getElementById('topic-number').innerText = item.number;
+            document.getElementById('topic-title').innerText = item.title;
+            document.getElementById('topic-description').innerText = item.description;
+
+            // Substitui o Palco de Animação e Inicializa
+            const stage = document.getElementById('animation-stage');
+            stage.innerHTML = item.render();
+
+            // Atualiza ícones Lucide aplicados dinamicamente
+            lucide.createIcons();
+
+            // Corre funções internas específicas de cada cena
+            item.init();
+
+            // Controlos de rodapé
+            document.getElementById('btn-prev').disabled = currentScene === 0;
+            const nextBtn = document.getElementById('btn-next');
+            if (currentScene === animations.length - 1) {
+                nextBtn.innerHTML = 'Recomeçar <i data-lucide="rotate-ccw" class="w-4 h-4"></i>';
+            } else {
+                nextBtn.innerHTML = 'Seguinte <i data-lucide="chevron-right" class="w-4 h-4"></i>';
+            }
+            lucide.createIcons();
+        }
+
+        // Navegação por Botões de Rodapé
+        document.getElementById('btn-prev').onclick = () => {
+            if (currentScene > 0) {
+                loadScene(currentScene - 1);
+            }
+        };
+
+        document.getElementById('btn-next').onclick = () => {
+            if (currentScene < animations.length - 1) {
+                loadScene(currentScene + 1);
+            } else {
+                // Se estiver no último slide, reinicia a apresentação
+                loadScene(0);
+            }
+        };
+
+        document.getElementById('btn-replay').onclick = () => {
+            loadScene(currentScene);
+        };
+
+        // Carregamento Inicial do Projeto
+        window.onload = () => {
+            loadScene(0);
+        };
+    </script>
+</body>
+</html>
+
+```
